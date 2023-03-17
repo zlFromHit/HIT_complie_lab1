@@ -1,0 +1,1 @@
+/usr/bin/gcc -g CMakeFiles/compile_lab1.dir/main.c.o -o compile_lab1 
