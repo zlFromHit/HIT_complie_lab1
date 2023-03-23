@@ -75,11 +75,12 @@ void print_point(struct node*);
 void yyerror();
 struct node* create_null_unit();
 struct node* create_gram_unit(char* name,int num,...);
-void preorder_tra(struct node* root,int depth);
+void preorder_tra(struct node* root,int depth,FILE* fp);
 int has_error = 0;
+extern FILE* fp;
+char* num2str(int num);
 
-
-#line 83 "syntax.tab.c"
+#line 84 "syntax.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -548,14 +549,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    54,    54,    56,    57,    59,    60,    61,    62,    63,
-      65,    66,    69,    70,    72,    73,    74,    76,    77,    79,
-      82,    83,    84,    86,    87,    88,    89,    91,    92,    94,
-      97,    98,   100,   101,   103,   104,   105,   106,   107,   108,
-     109,   110,   111,   112,   113,   116,   117,   119,   120,   122,
-     123,   125,   126,   129,   130,   131,   132,   133,   134,   135,
-     136,   137,   138,   139,   140,   141,   142,   143,   144,   145,
-     146,   147,   148,   149,   150,   152,   153
+       0,    55,    55,    63,    64,    66,    67,    68,    69,    70,
+      72,    73,    76,    77,    79,    80,    81,    83,    84,    86,
+      89,    90,    91,    93,    94,    95,    96,    98,    99,   101,
+     104,   105,   107,   108,   110,   111,   112,   113,   114,   115,
+     116,   117,   118,   119,   120,   123,   124,   126,   127,   129,
+     130,   132,   133,   136,   137,   138,   139,   140,   141,   142,
+     143,   144,   145,   146,   147,   148,   149,   150,   151,   152,
+     153,   154,   155,   156,   157,   159,   160
 };
 #endif
 
@@ -1228,457 +1229,463 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* Program: ExtDefList  */
-#line 54 "syntax.y"
-                      {int depth=0;(yyval.type_node) = create_gram_unit("Program",1,(yyvsp[0].type_node));if(has_error==0)preorder_tra((yyval.type_node),depth);}
-#line 1234 "syntax.tab.c"
+#line 55 "syntax.y"
+                      {
+			int depth=0;
+			(yyval.type_node) = create_gram_unit("Program",1,(yyvsp[0].type_node));
+			if(has_error==0){
+			    preorder_tra((yyval.type_node),depth,fp);
+			}
+			}
+#line 1241 "syntax.tab.c"
     break;
 
   case 3: /* ExtDefList: ExtDef ExtDefList  */
-#line 56 "syntax.y"
+#line 63 "syntax.y"
                                 {(yyval.type_node) = create_gram_unit("ExtDefList",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1240 "syntax.tab.c"
+#line 1247 "syntax.tab.c"
     break;
 
   case 4: /* ExtDefList: %empty  */
-#line 57 "syntax.y"
+#line 64 "syntax.y"
      {(yyval.type_node) = create_null_unit();}
-#line 1246 "syntax.tab.c"
+#line 1253 "syntax.tab.c"
     break;
 
   case 5: /* ExtDef: Specifier ExtDecList error SEMI  */
-#line 59 "syntax.y"
+#line 66 "syntax.y"
                                           {has_error = 1;}
-#line 1252 "syntax.tab.c"
+#line 1259 "syntax.tab.c"
     break;
 
   case 6: /* ExtDef: Specifier error SEMI  */
-#line 60 "syntax.y"
+#line 67 "syntax.y"
                           {has_error = 1;}
-#line 1258 "syntax.tab.c"
+#line 1265 "syntax.tab.c"
     break;
 
   case 7: /* ExtDef: Specifier FunDec CompSt  */
-#line 61 "syntax.y"
+#line 68 "syntax.y"
                              {(yyval.type_node) = create_gram_unit("ExtDef",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1264 "syntax.tab.c"
+#line 1271 "syntax.tab.c"
     break;
 
   case 8: /* ExtDef: Specifier ExtDecList SEMI  */
-#line 62 "syntax.y"
+#line 69 "syntax.y"
                                {(yyval.type_node) = create_gram_unit("ExtDef",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1270 "syntax.tab.c"
+#line 1277 "syntax.tab.c"
     break;
 
   case 9: /* ExtDef: Specifier SEMI  */
-#line 63 "syntax.y"
+#line 70 "syntax.y"
                     {(yyval.type_node) = create_gram_unit("ExtDef",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1276 "syntax.tab.c"
+#line 1283 "syntax.tab.c"
     break;
 
   case 10: /* ExtDecList: VarDec  */
-#line 65 "syntax.y"
+#line 72 "syntax.y"
                      {(yyval.type_node) = create_gram_unit("ExtDecList",1,(yyvsp[0].type_node));}
-#line 1282 "syntax.tab.c"
+#line 1289 "syntax.tab.c"
     break;
 
   case 11: /* ExtDecList: VarDec COMMA ExtDecList  */
-#line 66 "syntax.y"
+#line 73 "syntax.y"
                              {(yyval.type_node) = create_gram_unit("ExtDecList",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1288 "syntax.tab.c"
+#line 1295 "syntax.tab.c"
     break;
 
   case 12: /* Specifier: TYPE  */
-#line 69 "syntax.y"
+#line 76 "syntax.y"
                   {(yyval.type_node) = create_gram_unit("Specifier",1,(yyvsp[0].type_node));}
-#line 1294 "syntax.tab.c"
+#line 1301 "syntax.tab.c"
     break;
 
   case 13: /* Specifier: StructSpecifier  */
-#line 70 "syntax.y"
+#line 77 "syntax.y"
                      {(yyval.type_node) = create_gram_unit("Specifier",1,(yyvsp[0].type_node));}
-#line 1300 "syntax.tab.c"
+#line 1307 "syntax.tab.c"
     break;
 
   case 14: /* StructSpecifier: STRUCT OptTag LC DefList error RC  */
-#line 72 "syntax.y"
+#line 79 "syntax.y"
                                                      {has_error = 1;}
-#line 1306 "syntax.tab.c"
+#line 1313 "syntax.tab.c"
     break;
 
   case 15: /* StructSpecifier: STRUCT Tag  */
-#line 73 "syntax.y"
+#line 80 "syntax.y"
                 {(yyval.type_node) = create_gram_unit("StructSpecifier",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1312 "syntax.tab.c"
+#line 1319 "syntax.tab.c"
     break;
 
   case 16: /* StructSpecifier: STRUCT OptTag LC DefList RC  */
-#line 74 "syntax.y"
+#line 81 "syntax.y"
                                  {(yyval.type_node) = create_gram_unit("StructSpecifier",5,(yyvsp[-4].type_node),(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1318 "syntax.tab.c"
+#line 1325 "syntax.tab.c"
     break;
 
   case 17: /* OptTag: ID  */
-#line 76 "syntax.y"
+#line 83 "syntax.y"
              {(yyval.type_node) = create_gram_unit("OptTag", 1, (yyvsp[0].type_node));}
-#line 1324 "syntax.tab.c"
+#line 1331 "syntax.tab.c"
     break;
 
   case 18: /* OptTag: %empty  */
-#line 77 "syntax.y"
+#line 84 "syntax.y"
      {(yyval.type_node) = create_null_unit();}
-#line 1330 "syntax.tab.c"
+#line 1337 "syntax.tab.c"
     break;
 
   case 19: /* Tag: ID  */
-#line 79 "syntax.y"
+#line 86 "syntax.y"
           {(yyval.type_node) = create_gram_unit("Tag",1,(yyvsp[0].type_node));}
-#line 1336 "syntax.tab.c"
+#line 1343 "syntax.tab.c"
     break;
 
   case 20: /* VarDec: ID  */
-#line 82 "syntax.y"
+#line 89 "syntax.y"
              {(yyval.type_node) = create_gram_unit("VarDec",1,(yyvsp[0].type_node));}
-#line 1342 "syntax.tab.c"
+#line 1349 "syntax.tab.c"
     break;
 
   case 21: /* VarDec: VarDec LB INT error RB  */
-#line 83 "syntax.y"
+#line 90 "syntax.y"
                             {has_error = 1;}
-#line 1348 "syntax.tab.c"
+#line 1355 "syntax.tab.c"
     break;
 
   case 22: /* VarDec: VarDec LB INT RB  */
-#line 84 "syntax.y"
+#line 91 "syntax.y"
                       {(yyval.type_node) = create_gram_unit("VarDec",4,(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1354 "syntax.tab.c"
+#line 1361 "syntax.tab.c"
     break;
 
   case 23: /* FunDec: ID LP VarList error RP  */
-#line 86 "syntax.y"
+#line 93 "syntax.y"
                                  {has_error = 1;}
-#line 1360 "syntax.tab.c"
+#line 1367 "syntax.tab.c"
     break;
 
   case 24: /* FunDec: ID LP error RP  */
-#line 87 "syntax.y"
+#line 94 "syntax.y"
                     {has_error = 1;}
-#line 1366 "syntax.tab.c"
+#line 1373 "syntax.tab.c"
     break;
 
   case 25: /* FunDec: ID LP VarList RP  */
-#line 88 "syntax.y"
+#line 95 "syntax.y"
                       {(yyval.type_node) = create_gram_unit("FunDec",4,(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1372 "syntax.tab.c"
+#line 1379 "syntax.tab.c"
     break;
 
   case 26: /* FunDec: ID LP RP  */
-#line 89 "syntax.y"
+#line 96 "syntax.y"
               {(yyval.type_node) = create_gram_unit("FunDec",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1378 "syntax.tab.c"
+#line 1385 "syntax.tab.c"
     break;
 
   case 27: /* VarList: ParamDec COMMA VarList  */
-#line 91 "syntax.y"
+#line 98 "syntax.y"
                                   {(yyval.type_node) = create_gram_unit("VarList",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1384 "syntax.tab.c"
+#line 1391 "syntax.tab.c"
     break;
 
   case 28: /* VarList: ParamDec  */
-#line 92 "syntax.y"
+#line 99 "syntax.y"
               {(yyval.type_node) = create_gram_unit("VarList",1,(yyvsp[0].type_node));}
-#line 1390 "syntax.tab.c"
+#line 1397 "syntax.tab.c"
     break;
 
   case 29: /* ParamDec: Specifier VarDec  */
-#line 94 "syntax.y"
+#line 101 "syntax.y"
                              {(yyval.type_node) = create_gram_unit("ParamDec",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1396 "syntax.tab.c"
+#line 1403 "syntax.tab.c"
     break;
 
   case 30: /* CompSt: LC DefList StmtList error RC  */
-#line 97 "syntax.y"
+#line 104 "syntax.y"
                                        {has_error = 1;}
-#line 1402 "syntax.tab.c"
+#line 1409 "syntax.tab.c"
     break;
 
   case 31: /* CompSt: LC DefList StmtList RC  */
-#line 98 "syntax.y"
+#line 105 "syntax.y"
                             {(yyval.type_node) = create_gram_unit("CompSt",4,(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1408 "syntax.tab.c"
+#line 1415 "syntax.tab.c"
     break;
 
   case 32: /* StmtList: Stmt StmtList  */
-#line 100 "syntax.y"
+#line 107 "syntax.y"
                           {(yyval.type_node) = create_gram_unit("StmtList",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1414 "syntax.tab.c"
+#line 1421 "syntax.tab.c"
     break;
 
   case 33: /* StmtList: %empty  */
-#line 101 "syntax.y"
+#line 108 "syntax.y"
      {(yyval.type_node) = create_null_unit();}
-#line 1420 "syntax.tab.c"
+#line 1427 "syntax.tab.c"
     break;
 
   case 34: /* Stmt: Exp error SEMI  */
-#line 103 "syntax.y"
+#line 110 "syntax.y"
                        {has_error = 1;}
-#line 1426 "syntax.tab.c"
+#line 1433 "syntax.tab.c"
     break;
 
   case 35: /* Stmt: CompSt  */
-#line 104 "syntax.y"
+#line 111 "syntax.y"
             {(yyval.type_node) = create_gram_unit("Stmt",1,(yyvsp[0].type_node));}
-#line 1432 "syntax.tab.c"
+#line 1439 "syntax.tab.c"
     break;
 
   case 36: /* Stmt: RETURN Exp error SEMI  */
-#line 105 "syntax.y"
+#line 112 "syntax.y"
                            {has_error = 1;}
-#line 1438 "syntax.tab.c"
+#line 1445 "syntax.tab.c"
     break;
 
   case 37: /* Stmt: IF LP Exp error RP Stmt  */
-#line 106 "syntax.y"
+#line 113 "syntax.y"
                                                    {has_error = 1;}
-#line 1444 "syntax.tab.c"
+#line 1451 "syntax.tab.c"
     break;
 
   case 38: /* Stmt: IF LP Exp error RP Stmt ELSE Stmt  */
-#line 107 "syntax.y"
+#line 114 "syntax.y"
                                        {has_error = 1;}
-#line 1450 "syntax.tab.c"
+#line 1457 "syntax.tab.c"
     break;
 
   case 39: /* Stmt: WHILE LP Exp error RP Stmt  */
-#line 108 "syntax.y"
+#line 115 "syntax.y"
                                 {has_error = 1;}
-#line 1456 "syntax.tab.c"
+#line 1463 "syntax.tab.c"
     break;
 
   case 40: /* Stmt: Exp SEMI  */
-#line 109 "syntax.y"
+#line 116 "syntax.y"
               {(yyval.type_node) = create_gram_unit("Stmt",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1462 "syntax.tab.c"
+#line 1469 "syntax.tab.c"
     break;
 
   case 41: /* Stmt: RETURN Exp SEMI  */
-#line 110 "syntax.y"
+#line 117 "syntax.y"
                      {(yyval.type_node) = create_gram_unit("Stmt",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1468 "syntax.tab.c"
+#line 1475 "syntax.tab.c"
     break;
 
   case 42: /* Stmt: IF LP Exp RP Stmt  */
-#line 111 "syntax.y"
+#line 118 "syntax.y"
                                              {(yyval.type_node) = create_gram_unit("Stmt",5,(yyvsp[-4].type_node),(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1474 "syntax.tab.c"
+#line 1481 "syntax.tab.c"
     break;
 
   case 43: /* Stmt: IF LP Exp RP Stmt ELSE Stmt  */
-#line 112 "syntax.y"
+#line 119 "syntax.y"
                                  {(yyval.type_node) = create_gram_unit("Stmt",7,(yyvsp[-6].type_node),(yyvsp[-5].type_node),(yyvsp[-4].type_node),(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1480 "syntax.tab.c"
+#line 1487 "syntax.tab.c"
     break;
 
   case 44: /* Stmt: WHILE LP Exp RP Stmt  */
-#line 113 "syntax.y"
+#line 120 "syntax.y"
                           {(yyval.type_node) = create_gram_unit("Stmt",5,(yyvsp[-4].type_node),(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1486 "syntax.tab.c"
+#line 1493 "syntax.tab.c"
     break;
 
   case 45: /* DefList: Def DefList  */
-#line 116 "syntax.y"
+#line 123 "syntax.y"
                        {(yyval.type_node) = create_gram_unit("DefList",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1492 "syntax.tab.c"
+#line 1499 "syntax.tab.c"
     break;
 
   case 46: /* DefList: %empty  */
-#line 117 "syntax.y"
+#line 124 "syntax.y"
      {(yyval.type_node) = create_null_unit();}
-#line 1498 "syntax.tab.c"
+#line 1505 "syntax.tab.c"
     break;
 
   case 47: /* Def: Specifier DecList error SEMI  */
-#line 119 "syntax.y"
+#line 126 "syntax.y"
                                     {has_error = 1;}
-#line 1504 "syntax.tab.c"
+#line 1511 "syntax.tab.c"
     break;
 
   case 48: /* Def: Specifier DecList SEMI  */
-#line 120 "syntax.y"
+#line 127 "syntax.y"
                             {(yyval.type_node) = create_gram_unit("Def",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1510 "syntax.tab.c"
+#line 1517 "syntax.tab.c"
     break;
 
   case 49: /* DecList: Dec  */
-#line 122 "syntax.y"
+#line 129 "syntax.y"
                {(yyval.type_node) = create_gram_unit("DecList",1,(yyvsp[0].type_node));}
-#line 1516 "syntax.tab.c"
+#line 1523 "syntax.tab.c"
     break;
 
   case 50: /* DecList: Dec COMMA DecList  */
-#line 123 "syntax.y"
+#line 130 "syntax.y"
                        {(yyval.type_node) = create_gram_unit("DecList",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1522 "syntax.tab.c"
+#line 1529 "syntax.tab.c"
     break;
 
   case 51: /* Dec: VarDec  */
-#line 125 "syntax.y"
+#line 132 "syntax.y"
               {(yyval.type_node) = create_gram_unit("Dec",1,(yyvsp[0].type_node));}
-#line 1528 "syntax.tab.c"
+#line 1535 "syntax.tab.c"
     break;
 
   case 52: /* Dec: VarDec ASSIGNOP Exp  */
-#line 126 "syntax.y"
+#line 133 "syntax.y"
                          {(yyval.type_node) = create_gram_unit("Dec",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1534 "syntax.tab.c"
+#line 1541 "syntax.tab.c"
     break;
 
   case 53: /* Exp: Exp ASSIGNOP Exp  */
-#line 129 "syntax.y"
+#line 136 "syntax.y"
                         {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1540 "syntax.tab.c"
+#line 1547 "syntax.tab.c"
     break;
 
   case 54: /* Exp: Exp AND Exp  */
-#line 130 "syntax.y"
+#line 137 "syntax.y"
                  {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1546 "syntax.tab.c"
+#line 1553 "syntax.tab.c"
     break;
 
   case 55: /* Exp: Exp OR Exp  */
-#line 131 "syntax.y"
+#line 138 "syntax.y"
                 {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1552 "syntax.tab.c"
+#line 1559 "syntax.tab.c"
     break;
 
   case 56: /* Exp: Exp RELOP Exp  */
-#line 132 "syntax.y"
+#line 139 "syntax.y"
                    {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1558 "syntax.tab.c"
+#line 1565 "syntax.tab.c"
     break;
 
   case 57: /* Exp: Exp PLUS Exp  */
-#line 133 "syntax.y"
+#line 140 "syntax.y"
                   {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1564 "syntax.tab.c"
+#line 1571 "syntax.tab.c"
     break;
 
   case 58: /* Exp: Exp MINUS Exp  */
-#line 134 "syntax.y"
+#line 141 "syntax.y"
                    {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1570 "syntax.tab.c"
+#line 1577 "syntax.tab.c"
     break;
 
   case 59: /* Exp: Exp STAR Exp  */
-#line 135 "syntax.y"
+#line 142 "syntax.y"
                   {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1576 "syntax.tab.c"
+#line 1583 "syntax.tab.c"
     break;
 
   case 60: /* Exp: Exp DIV Exp  */
-#line 136 "syntax.y"
+#line 143 "syntax.y"
                  {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1582 "syntax.tab.c"
+#line 1589 "syntax.tab.c"
     break;
 
   case 61: /* Exp: LP Exp error RP  */
-#line 137 "syntax.y"
+#line 144 "syntax.y"
                      {has_error = 1;}
-#line 1588 "syntax.tab.c"
+#line 1595 "syntax.tab.c"
     break;
 
   case 62: /* Exp: MINUS Exp  */
-#line 138 "syntax.y"
+#line 145 "syntax.y"
                {(yyval.type_node) = create_gram_unit("Exp",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1594 "syntax.tab.c"
+#line 1601 "syntax.tab.c"
     break;
 
   case 63: /* Exp: NOT Exp  */
-#line 139 "syntax.y"
+#line 146 "syntax.y"
              {(yyval.type_node) = create_gram_unit("Exp",2,(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1600 "syntax.tab.c"
+#line 1607 "syntax.tab.c"
     break;
 
   case 64: /* Exp: ID LP Args error RP  */
-#line 140 "syntax.y"
+#line 147 "syntax.y"
                          {has_error = 1;}
-#line 1606 "syntax.tab.c"
+#line 1613 "syntax.tab.c"
     break;
 
   case 65: /* Exp: ID LP error RP  */
-#line 141 "syntax.y"
+#line 148 "syntax.y"
                     {has_error = 1;}
-#line 1612 "syntax.tab.c"
+#line 1619 "syntax.tab.c"
     break;
 
   case 66: /* Exp: Exp LB Exp error RB  */
-#line 142 "syntax.y"
+#line 149 "syntax.y"
                          {has_error = 1;}
-#line 1618 "syntax.tab.c"
+#line 1625 "syntax.tab.c"
     break;
 
   case 67: /* Exp: Exp DOT ID  */
-#line 143 "syntax.y"
+#line 150 "syntax.y"
                 {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1624 "syntax.tab.c"
+#line 1631 "syntax.tab.c"
     break;
 
   case 68: /* Exp: ID  */
-#line 144 "syntax.y"
+#line 151 "syntax.y"
         {(yyval.type_node) = create_gram_unit("Exp",1,(yyvsp[0].type_node));}
-#line 1630 "syntax.tab.c"
+#line 1637 "syntax.tab.c"
     break;
 
   case 69: /* Exp: INT  */
-#line 145 "syntax.y"
+#line 152 "syntax.y"
          {(yyval.type_node) = create_gram_unit("Exp",1,(yyvsp[0].type_node));}
-#line 1636 "syntax.tab.c"
+#line 1643 "syntax.tab.c"
     break;
 
   case 70: /* Exp: FLOAT  */
-#line 146 "syntax.y"
+#line 153 "syntax.y"
            {(yyval.type_node) = create_gram_unit("Exp",1,(yyvsp[0].type_node));}
-#line 1642 "syntax.tab.c"
+#line 1649 "syntax.tab.c"
     break;
 
   case 71: /* Exp: LP Exp RP  */
-#line 147 "syntax.y"
+#line 154 "syntax.y"
                {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1648 "syntax.tab.c"
+#line 1655 "syntax.tab.c"
     break;
 
   case 72: /* Exp: ID LP Args RP  */
-#line 148 "syntax.y"
+#line 155 "syntax.y"
                    {(yyval.type_node) = create_gram_unit("Exp",4,(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1654 "syntax.tab.c"
+#line 1661 "syntax.tab.c"
     break;
 
   case 73: /* Exp: ID LP RP  */
-#line 149 "syntax.y"
+#line 156 "syntax.y"
               {(yyval.type_node) = create_gram_unit("Exp",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1660 "syntax.tab.c"
+#line 1667 "syntax.tab.c"
     break;
 
   case 74: /* Exp: Exp LB Exp RB  */
-#line 150 "syntax.y"
+#line 157 "syntax.y"
                    {(yyval.type_node) = create_gram_unit("Exp",4,(yyvsp[-3].type_node),(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1666 "syntax.tab.c"
+#line 1673 "syntax.tab.c"
     break;
 
   case 75: /* Args: Exp COMMA Args  */
-#line 152 "syntax.y"
+#line 159 "syntax.y"
                        {(yyval.type_node) = create_gram_unit("Args",3,(yyvsp[-2].type_node),(yyvsp[-1].type_node),(yyvsp[0].type_node));}
-#line 1672 "syntax.tab.c"
+#line 1679 "syntax.tab.c"
     break;
 
   case 76: /* Args: Exp  */
-#line 153 "syntax.y"
+#line 160 "syntax.y"
          {(yyval.type_node) = create_gram_unit("Args",1,(yyvsp[0].type_node));}
-#line 1678 "syntax.tab.c"
+#line 1685 "syntax.tab.c"
     break;
 
 
-#line 1682 "syntax.tab.c"
+#line 1689 "syntax.tab.c"
 
       default: break;
     }
@@ -1871,10 +1878,55 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 155 "syntax.y"
+#line 162 "syntax.y"
 
+/* 将数字转化为字符串 */
+char* num2str(int num){
+    int bit_num=0;
+    int temp = num;
+    while(temp!=0){
+        bit_num++;
+        temp/=10;
+    }
+    char* res = (char*)malloc(bit_num+1);
+    temp = num;
+    for(int i=bit_num-1;i>=0;i--){
+        int bit = temp%10;
+        temp/=10;
+        char c = (char)(bit + (int)'0');
+        res[i] = c;
+    }
+    res[bit_num] = '\0';
+    return res;
+}
+/* 字符串截取 */
+char *left(char *dst,char *src,int n)
+{
+	char *p=src;
+	char *q=dst;
+	int len=strlen(src);
+	if(n>len) n=len;
+	while(n--) *(q++)=*(p++);
+	*(q++)='\0';
+	return dst;
+}
+
+char *right(char *dst,char *src,int n)
+{
+	char *p=src;
+	char *q=dst;
+	int len=strlen(src);
+	if(n>len) n=len;
+	p+=(len-n);
+	while(*(q++)=*(p++));
+	return dst;
+}
+/* 重写yyerror */
 void yyerror(){
     printf("Error type B at line %d: syntax error\n",yylineno);
+    fputs("Error type B at line ", fp);
+    fputs(num2str(yylineno), fp);
+    fputs(": syntax error\n", fp);
 }
 /* 空产生式 */
 struct node* create_null_unit(){
@@ -1916,23 +1968,36 @@ struct node* create_gram_unit(char* name,int num,...){
     parent->child_nodes = first_child;
     return parent;
 }
-/* 先序遍历 */
-void preorder_tra(struct node* root,int depth){
+/* 先序遍历,同时打印到文件 */
+void preorder_tra(struct node* root,int depth,FILE* fp){
     if(root==NULL)return;
     int temp = depth;
     if(strcmp(root->id,"null")!=0){
     	for(int i=0;i<temp;i++){
             printf("  ");
-    	}
+            fputs("  ", fp);
+        }
     	printf("%s",root->id);
-    	if(strcmp(root->id,"ID")==0||strcmp(root->id,"INT")==0||strcmp(root->id,"FLOAT")==0)printf(": %s",root->value);
-    	else printf(" (%d)",root->line_no);
+    	fputs(root->id, fp);
+    	if(strcmp(root->id,"ID")==0||strcmp(root->id,"INT")==0||strcmp(root->id,"FLOAT")==0){
+    	    printf(": %s",root->value);
+    	    fputs(": ", fp);
+    	    fputs(root->value, fp);
+    	}
+    	else {
+    	    printf(" (%d)",root->line_no);
+    	    fputs(" (", fp);
+    	    char* line_num = num2str(root->line_no);
+    	    fputs(line_num, fp);
+    	    fputs(")", fp);
+    	}
     	printf("\n");
+    	fputs("\n", fp);
     }
     if(root->child_nodes){
         temp++;
-        preorder_tra(root->child_nodes,temp);
+        preorder_tra(root->child_nodes,temp,fp);
         temp--;
     }
-    preorder_tra(root->right_brother,temp);
+    preorder_tra(root->right_brother,temp,fp);
 }

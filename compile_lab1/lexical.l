@@ -7,6 +7,8 @@ struct node{
     struct node* child_nodes;  //指向第一个子结点的指针，所有子结点的链表
     struct node* right_brother;  //指向右兄弟的指针
 };
+extern char* num2str(int num);
+extern FILE* fp;
 extern int has_error;
 #include "syntax.tab.h"
 void create_lexical_unit(char* name,char* content);
@@ -127,7 +129,15 @@ int|float  {
         }
 \n
 {space}+
-.  {has_error = 1;printf("Error type A at Line %d: Mysterious character \"%s\".\n",yylineno,yytext);}
+.  {
+    has_error = 1;
+    printf("Error type A at Line %d: Mysterious character \"%s\".\n",yylineno,yytext);
+    fputs("Error type A at Line ", fp);
+    fputs(num2str(yylineno), fp);
+    fputs(": Mysterious character \"", fp);
+    fputs(yytext, fp);
+    fputs("\".\n", fp);
+    }
 %%
 /* 设置终结符属性,也就是创建叶子节点 */
 void create_lexical_unit(char* name,char* content){

@@ -1,0 +1,11 @@
+Program (1)
+  ExtDefList (1)
+    ExtDef (1)
+      Specifier (1)
+        StructSpecifier (1)
+          STRUCT (1)
+          OptTag (1)
+            ID: a
+          LC (1)
+          RC (1)
+      SEMI (1)

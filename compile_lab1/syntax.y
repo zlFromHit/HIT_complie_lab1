@@ -5,9 +5,10 @@ void print_point(struct node*);
 void yyerror();
 struct node* create_null_unit();
 struct node* create_gram_unit(char* name,int num,...);
-void preorder_tra(struct node* root,int depth);
+void preorder_tra(struct node* root,int depth,FILE* fp);
 int has_error = 0;
-
+extern FILE* fp;
+char* num2str(int num);
 %}
 %union  {
 	struct node* type_node;
@@ -51,7 +52,13 @@ int has_error = 0;
 %%
 
 /* High-leval Definitions */
-Program : ExtDefList  {int depth=0;$$ = create_gram_unit("Program",1,$1);if(has_error==0)preorder_tra($$,depth);}
+Program : ExtDefList  {
+			int depth=0;
+			$$ = create_gram_unit("Program",1,$1);
+			if(has_error==0){
+			    preorder_tra($$,depth,fp);
+			}
+			}
   ;
 ExtDefList : ExtDef ExtDefList  {$$ = create_gram_unit("ExtDefList",2,$1,$2);}
   |  {$$ = create_null_unit();}
@@ -153,8 +160,53 @@ Args : Exp COMMA Args  {$$ = create_gram_unit("Args",3,$1,$2,$3);}
   | Exp  {$$ = create_gram_unit("Args",1,$1);}
   ;
 %%
+/* 将数字转化为字符串 */
+char* num2str(int num){
+    int bit_num=0;
+    int temp = num;
+    while(temp!=0){
+        bit_num++;
+        temp/=10;
+    }
+    char* res = (char*)malloc(bit_num+1);
+    temp = num;
+    for(int i=bit_num-1;i>=0;i--){
+        int bit = temp%10;
+        temp/=10;
+        char c = (char)(bit + (int)'0');
+        res[i] = c;
+    }
+    res[bit_num] = '\0';
+    return res;
+}
+/* 字符串截取 */
+char *left(char *dst,char *src,int n)
+{
+	char *p=src;
+	char *q=dst;
+	int len=strlen(src);
+	if(n>len) n=len;
+	while(n--) *(q++)=*(p++);
+	*(q++)='\0';
+	return dst;
+}
+
+char *right(char *dst,char *src,int n)
+{
+	char *p=src;
+	char *q=dst;
+	int len=strlen(src);
+	if(n>len) n=len;
+	p+=(len-n);
+	while(*(q++)=*(p++));
+	return dst;
+}
+/* 重写yyerror */
 void yyerror(){
     printf("Error type B at line %d: syntax error\n",yylineno);
+    fputs("Error type B at line ", fp);
+    fputs(num2str(yylineno), fp);
+    fputs(": syntax error\n", fp);
 }
 /* 空产生式 */
 struct node* create_null_unit(){
@@ -196,23 +248,36 @@ struct node* create_gram_unit(char* name,int num,...){
     parent->child_nodes = first_child;
     return parent;
 }
-/* 先序遍历 */
-void preorder_tra(struct node* root,int depth){
+/* 先序遍历,同时打印到文件 */
+void preorder_tra(struct node* root,int depth,FILE* fp){
     if(root==NULL)return;
     int temp = depth;
     if(strcmp(root->id,"null")!=0){
     	for(int i=0;i<temp;i++){
             printf("  ");
-    	}
+            fputs("  ", fp);
+        }
     	printf("%s",root->id);
-    	if(strcmp(root->id,"ID")==0||strcmp(root->id,"INT")==0||strcmp(root->id,"FLOAT")==0)printf(": %s",root->value);
-    	else printf(" (%d)",root->line_no);
+    	fputs(root->id, fp);
+    	if(strcmp(root->id,"ID")==0||strcmp(root->id,"INT")==0||strcmp(root->id,"FLOAT")==0){
+    	    printf(": %s",root->value);
+    	    fputs(": ", fp);
+    	    fputs(root->value, fp);
+    	}
+    	else {
+    	    printf(" (%d)",root->line_no);
+    	    fputs(" (", fp);
+    	    char* line_num = num2str(root->line_no);
+    	    fputs(line_num, fp);
+    	    fputs(")", fp);
+    	}
     	printf("\n");
+    	fputs("\n", fp);
     }
     if(root->child_nodes){
         temp++;
-        preorder_tra(root->child_nodes,temp);
+        preorder_tra(root->child_nodes,temp,fp);
         temp--;
     }
-    preorder_tra(root->right_brother,temp);
+    preorder_tra(root->right_brother,temp,fp);
 }

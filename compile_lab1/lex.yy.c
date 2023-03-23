@@ -571,11 +571,13 @@ struct node{
     struct node* child_nodes;  //指向第一个子结点的指针，所有子结点的链表
     struct node* right_brother;  //指向右兄弟的指针
 };
+extern char* num2str(int num);
+extern FILE* fp;
 extern int has_error;
 #include "syntax.tab.h"
 void create_lexical_unit(char* name,char* content);
-#line 578 "lex.yy.c"
-#line 579 "lex.yy.c"
+#line 580 "lex.yy.c"
+#line 581 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -792,9 +794,9 @@ YY_DECL
 		}
 
 	{
-#line 18 "lexical.l"
+#line 20 "lexical.l"
 
-#line 798 "lex.yy.c"
+#line 800 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -863,7 +865,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 19 "lexical.l"
+#line 21 "lexical.l"
 {
         create_lexical_unit("TYPE",yytext);
         return TYPE;
@@ -871,7 +873,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 23 "lexical.l"
+#line 25 "lexical.l"
 {
         create_lexical_unit("STRUCT",yytext);
         return STRUCT;
@@ -879,7 +881,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 27 "lexical.l"
+#line 29 "lexical.l"
 {
         create_lexical_unit("RETURN",yytext);
         return RETURN;
@@ -887,7 +889,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 31 "lexical.l"
+#line 33 "lexical.l"
 {
         create_lexical_unit("IF",yytext);
         return IF;
@@ -895,7 +897,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 35 "lexical.l"
+#line 37 "lexical.l"
 {
         create_lexical_unit("ELSE",yytext);
         return ELSE;
@@ -903,7 +905,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 39 "lexical.l"
+#line 41 "lexical.l"
 {
         create_lexical_unit("WHILE",yytext);
         return WHILE;
@@ -911,7 +913,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 43 "lexical.l"
+#line 45 "lexical.l"
 {
         create_lexical_unit("INT",yytext);
         return INT;
@@ -919,7 +921,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 47 "lexical.l"
+#line 49 "lexical.l"
 {
         create_lexical_unit("FLOAT",yytext);
         return FLOAT;
@@ -927,7 +929,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 51 "lexical.l"
+#line 53 "lexical.l"
 {
         char* content = yytext;
         create_lexical_unit("ID",content);
@@ -936,7 +938,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 56 "lexical.l"
+#line 58 "lexical.l"
 {
         create_lexical_unit("SEMI",yytext);
         return SEMI;
@@ -944,7 +946,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 60 "lexical.l"
+#line 62 "lexical.l"
 {
         create_lexical_unit("COMMA",yytext);
         return COMMA;
@@ -952,7 +954,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 64 "lexical.l"
+#line 66 "lexical.l"
 {
         create_lexical_unit("ASSIGNOP",yytext);
         return ASSIGNOP;
@@ -960,7 +962,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 68 "lexical.l"
+#line 70 "lexical.l"
 {
         create_lexical_unit("RELOP",yytext);
         return RELOP;
@@ -968,7 +970,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 72 "lexical.l"
+#line 74 "lexical.l"
 {
         create_lexical_unit("PLUS",yytext);
         return PLUS;
@@ -976,7 +978,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 76 "lexical.l"
+#line 78 "lexical.l"
 {
         create_lexical_unit("MINUS",yytext);
         return MINUS;
@@ -984,7 +986,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 80 "lexical.l"
+#line 82 "lexical.l"
 {
         create_lexical_unit("STAR",yytext);
         return STAR;
@@ -992,7 +994,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 84 "lexical.l"
+#line 86 "lexical.l"
 {
         create_lexical_unit("DIV",yytext);
         return DIV;
@@ -1000,7 +1002,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 88 "lexical.l"
+#line 90 "lexical.l"
 {
         create_lexical_unit("AND",yytext);
         return AND;
@@ -1008,7 +1010,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 92 "lexical.l"
+#line 94 "lexical.l"
 {
         create_lexical_unit("OR",yytext);
         return OR;
@@ -1016,7 +1018,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 96 "lexical.l"
+#line 98 "lexical.l"
 {
         create_lexical_unit("DOT",yytext);
         return DOT;
@@ -1024,7 +1026,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 100 "lexical.l"
+#line 102 "lexical.l"
 {
         create_lexical_unit("NOT",yytext);
         return NOT;
@@ -1032,7 +1034,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 104 "lexical.l"
+#line 106 "lexical.l"
 {
         create_lexical_unit("LP",yytext);
         return LP;
@@ -1040,7 +1042,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 108 "lexical.l"
+#line 110 "lexical.l"
 {
         create_lexical_unit("RP",yytext);
         return RP;
@@ -1048,7 +1050,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 112 "lexical.l"
+#line 114 "lexical.l"
 {
         create_lexical_unit("LB",yytext);
         return LB;
@@ -1056,7 +1058,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 116 "lexical.l"
+#line 118 "lexical.l"
 {
         create_lexical_unit("RB",yytext);
         return RB;
@@ -1064,7 +1066,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 120 "lexical.l"
+#line 122 "lexical.l"
 {
         create_lexical_unit("LC",yytext);
         return LC;
@@ -1072,7 +1074,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 124 "lexical.l"
+#line 126 "lexical.l"
 {
         create_lexical_unit("RC",yytext);
         return RC;
@@ -1081,25 +1083,33 @@ YY_RULE_SETUP
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 128 "lexical.l"
+#line 130 "lexical.l"
 
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 129 "lexical.l"
+#line 131 "lexical.l"
 
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 130 "lexical.l"
-{has_error = 1;printf("Error type A at Line %d: Mysterious character \"%s\".\n",yylineno,yytext);}
+#line 132 "lexical.l"
+{
+    has_error = 1;
+    printf("Error type A at Line %d: Mysterious character \"%s\".\n",yylineno,yytext);
+    fputs("Error type A at Line ", fp);
+    fputs(num2str(yylineno), fp);
+    fputs(": Mysterious character \"", fp);
+    fputs(yytext, fp);
+    fputs("\".\n", fp);
+    }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 131 "lexical.l"
+#line 141 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 1103 "lex.yy.c"
+#line 1113 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2116,7 +2126,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 131 "lexical.l"
+#line 141 "lexical.l"
 
 /* 设置终结符属性,也就是创建叶子节点 */
 void create_lexical_unit(char* name,char* content){
